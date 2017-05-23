@@ -1,0 +1,9 @@
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\bin\Debug\netcoreapp1.1\BudgetingAPI.deps.json
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\bin\Debug\netcoreapp1.1\BudgetingAPI.runtimeconfig.json
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\bin\Debug\netcoreapp1.1\BudgetingAPI.runtimeconfig.dev.json
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\bin\Debug\netcoreapp1.1\BudgetingAPI.dll
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\bin\Debug\netcoreapp1.1\BudgetingAPI.pdb
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\obj\Debug\netcoreapp1.1\BudgetingAPI.csprojResolveAssemblyReference.cache
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\obj\Debug\netcoreapp1.1\BudgetingAPI.AssemblyInfo.cs
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\obj\Debug\netcoreapp1.1\BudgetingAPI.dll
+C:\Users\rosalindwills\Documents\_Programming\Personal Projects\BudgetingAPI\BudgetingAPI\obj\Debug\netcoreapp1.1\BudgetingAPI.pdb
