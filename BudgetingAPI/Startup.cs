@@ -10,7 +10,10 @@ using Microsoft.Extensions.Logging;
 
 namespace BudgetingAPI
 {
+	using AutoMapper;
 	using Infrastructure.Entities;
+	using Infrastructure.Repositories;
+	using Infrastructure.Services;
 	using Microsoft.EntityFrameworkCore;
 
 	public class Startup
@@ -35,8 +38,11 @@ namespace BudgetingAPI
         {
             // Add framework services.
 	        services.AddSingleton(_config);
+	        services.AddScoped<IRepository<MonthlyBudget>, BudgetRepository>();
+	        services.AddScoped<IBudgetService, BudgetService>();
             services.AddMvc();
-	        var connection = _config["Data:ConnectionString"];
+	        services.AddAutoMapper();
+			var connection = _config["Data:ConnectionString"];
 			services.AddDbContext<BudgetContext>(options => options.UseSqlServer(connection));
 		}
 
