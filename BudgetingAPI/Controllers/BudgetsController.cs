@@ -6,12 +6,14 @@
 	using AutoMapper;
 	using Infrastructure.Repositories;
 	using Infrastructure.Services;
+	using Microsoft.AspNetCore.Authorization;
 	using Entities = Infrastructure.Entities;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.Extensions.Logging;
 	using Models.DomainModels;
 
 	[Route("api/budgets")]
+	[Authorize]
 	public class BudgetsController : BaseController
     {
 	    private readonly IRepository<Entities.MonthlyBudget> _budgetRepository;

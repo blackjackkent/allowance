@@ -11,5 +11,6 @@ namespace BudgetingAPI.Infrastructure.Entities
 		public int Year { get; set; }
 		public List<Transaction> Transactions { get; set; }
 		public decimal Savings { get; set; }
+		public virtual BudgetUser User { get; set; }
     }
 }

@@ -10,11 +10,15 @@ using Microsoft.Extensions.Logging;
 
 namespace BudgetingAPI
 {
+	using System.Text;
 	using AutoMapper;
 	using Infrastructure.Entities;
 	using Infrastructure.Repositories;
 	using Infrastructure.Services;
+	using Microsoft.AspNetCore.Authentication.Cookies;
+	using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore;
+	using Microsoft.IdentityModel.Tokens;
 
 	public class Startup
     {
@@ -44,6 +48,30 @@ namespace BudgetingAPI
 	        services.AddAutoMapper();
 			var connection = _config["Data:ConnectionString"];
 			services.AddDbContext<BudgetContext>(options => options.UseSqlServer(connection));
+
+	        services.AddIdentity<BudgetUser, IdentityRole>(config =>
+		        {
+			        config.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents
+			        {
+				        OnRedirectToLogin = (ctx) =>
+				        {
+					        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+					        {
+						        ctx.Response.StatusCode = 401;
+					        }
+					        return Task.CompletedTask;
+				        },
+				        OnRedirectToAccessDenied = (ctx) =>
+				        {
+					        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+					        {
+						        ctx.Response.StatusCode = 403;
+					        }
+					        return Task.CompletedTask;
+				        }
+			        };
+		        })
+		        .AddEntityFrameworkStores<BudgetContext>();
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +80,21 @@ namespace BudgetingAPI
             loggerFactory.AddConsole(_config.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc();
+	        app.UseIdentity();
+	        app.UseJwtBearerAuthentication(new JwtBearerOptions
+	        {
+		        AutomaticAuthenticate = true,
+		        AutomaticChallenge = true,
+		        TokenValidationParameters = new TokenValidationParameters
+		        {
+			        ValidIssuer = _config["Tokens:Issuer"],
+			        ValidAudience = _config["Tokens:Audience"],
+			        ValidateIssuerSigningKey = true,
+			        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"])),
+			        ValidateLifetime = true
+		        }
+	        });
+			app.UseMvc();
         }
     }
 }
