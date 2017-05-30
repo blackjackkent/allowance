@@ -31,5 +31,16 @@
 		    }
 		    return null;
 	    }
+
+	    public async Task<MonthlyBudget> UpdateBudget(MonthlyBudget budgetToUpdate, IRepository<Entities.MonthlyBudget> budgetRepository, IMapper mapper)
+	    {
+		    var entity = mapper.Map<Entities.MonthlyBudget>(budgetToUpdate);
+		    budgetRepository.Update(entity);
+		    if (await budgetRepository.SaveAllAsync())
+		    {
+			    return mapper.Map<MonthlyBudget>(entity);
+		    }
+		    return null;
+		}
     }
 }

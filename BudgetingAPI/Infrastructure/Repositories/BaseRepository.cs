@@ -24,6 +24,11 @@ namespace BudgetingAPI.Infrastructure.Repositories
 			_context.Add(entity);
 		}
 
+		public void Update(T entity)
+		{
+			_context.Update(entity);
+		}
+
 		public void Delete(T entity)
 		{
 			_context.Remove(entity);

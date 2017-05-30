@@ -9,6 +9,7 @@
 	public interface IRepository<T> where T : IEntity
 	{
 		void Add(T entity);
+		void Update(T entity);
 	    void Delete(T entity);
 	    Task<bool> SaveAllAsync();
 		IEnumerable<T> Get(Expression<Func<T, bool>> filter);

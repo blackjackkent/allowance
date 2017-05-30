@@ -53,19 +53,47 @@
 		    catch (Exception e)
 		    {
 			    _logger.LogError($"Error retrieving budget with ID {id}: {e.Message}");
+			    return BadRequest(e);
 		    }
-		    return BadRequest();
 	    }
 
 		[HttpPost("")]
 	    public async Task<IActionResult> Post([FromBody] MonthlyBudget budget)
 		{
-			var createdBudget = await _budgetService.CreateBudget(budget, _budgetRepository, _mapper);
-		    if (createdBudget != null)
+			_logger.LogInformation($"Creating new budget");
+			try
+			{
+				var createdBudget = await _budgetService.CreateBudget(budget, _budgetRepository, _mapper);
+				if (createdBudget != null)
+				{
+					return Created(createdBudget.ApiUrl, createdBudget);
+				}
+				return BadRequest();
+			}
+			catch (Exception e)
+			{
+				_logger.LogError($"Error creating budget: {e.Message}");
+				return BadRequest(e);
+			}
+	    }
+
+	    [HttpPut("{id}")]
+	    public async Task<IActionResult> Put(Guid id, [FromBody] MonthlyBudget budget)
+	    {
+		    _logger.LogInformation($"Updating budget with id {id}");
+		    try
 		    {
-			    return Created(createdBudget.ApiUrl, createdBudget);
+			    var updatedBudget = await _budgetService.UpdateBudget(budget, _budgetRepository, _mapper);
+			    if (updatedBudget != null)
+			    {
+				    return Ok(updatedBudget);
+			    }
+			    return BadRequest();
 		    }
-		    return BadRequest();
+		    catch (Exception e)
+		    {
+			    return BadRequest(e);
+		    }
 	    }
 	}
 }

@@ -16,5 +16,6 @@ namespace BudgetingAPI.Infrastructure.Services
 		MonthlyBudget GetBudget(Guid id, IRepository<Entities.MonthlyBudget> budgetRepository, IMapper mapper);
 
 		Task<MonthlyBudget> CreateBudget(MonthlyBudget budget, IRepository<Entities.MonthlyBudget> budgetRepository, IMapper mapper);
+		Task<MonthlyBudget> UpdateBudget(MonthlyBudget budgetToUpdate, IRepository<Entities.MonthlyBudget> budgetRepository, IMapper mapper);
 	}
 }
