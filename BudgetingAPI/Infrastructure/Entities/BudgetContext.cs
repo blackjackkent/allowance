@@ -9,7 +9,7 @@
 		    : base(options)
 	    { }
 
-		public DbSet<MonthlyBudget> MonthlyBudgets { get; set; }
+		public DbSet<Budget> Budgets { get; set; }
 		public DbSet<Transaction> Transactions { get; set; }
     }
 }

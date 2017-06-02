@@ -5,15 +5,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BudgetingAPI.Migrations
 {
-    public partial class AddingIdentity : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "UserId",
-                table: "MonthlyBudgets",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -90,6 +85,27 @@ namespace BudgetingAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Budgets",
+                columns: table => new
+                {
+                    BudgetId = table.Column<Guid>(nullable: false),
+                    Month = table.Column<int>(nullable: false),
+                    Savings = table.Column<decimal>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    Year = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Budgets", x => x.BudgetId);
+                    table.ForeignKey(
+                        name: "FK_Budgets_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -154,10 +170,37 @@ namespace BudgetingAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    TransactionId = table.Column<Guid>(nullable: false),
+                    BudgetId = table.Column<Guid>(nullable: false),
+                    TransactionDate = table.Column<DateTime>(nullable: false),
+                    TransactionName = table.Column<string>(nullable: true),
+                    TransactionType = table.Column<int>(nullable: false),
+                    Value = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.TransactionId);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Budgets_BudgetId",
+                        column: x => x.BudgetId,
+                        principalTable: "Budgets",
+                        principalColumn: "BudgetId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_MonthlyBudgets_UserId",
-                table: "MonthlyBudgets",
+                name: "IX_Budgets_UserId",
+                table: "Budgets",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_BudgetId",
+                table: "Transactions",
+                column: "BudgetId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -195,21 +238,12 @@ namespace BudgetingAPI.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_MonthlyBudgets_AspNetUsers_UserId",
-                table: "MonthlyBudgets",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_MonthlyBudgets_AspNetUsers_UserId",
-                table: "MonthlyBudgets");
+            migrationBuilder.DropTable(
+                name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -227,18 +261,13 @@ namespace BudgetingAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Budgets");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_MonthlyBudgets_UserId",
-                table: "MonthlyBudgets");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "MonthlyBudgets");
         }
     }
 }

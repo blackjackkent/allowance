@@ -14,8 +14,10 @@ namespace BudgetingAPI
 	using AutoMapper;
 	using Infrastructure.Entities;
 	using Infrastructure.Repositories;
+	using Infrastructure.Repositories.Seeders;
 	using Infrastructure.Services;
 	using Microsoft.AspNetCore.Authentication.Cookies;
+	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.IdentityModel.Tokens;
@@ -42,12 +44,15 @@ namespace BudgetingAPI
         {
             // Add framework services.
 	        services.AddSingleton(_config);
-	        services.AddScoped<IRepository<MonthlyBudget>, BudgetRepository>();
-	        services.AddScoped<IBudgetService, BudgetService>();
-            services.AddMvc();
-	        services.AddAutoMapper();
 			var connection = _config["Data:ConnectionString"];
 			services.AddDbContext<BudgetContext>(options => options.UseSqlServer(connection));
+	        services.AddScoped<IRepository<Budget>, BudgetRepository>();
+	        services.AddScoped<IRepository<Transaction>, TransactionRepository>();
+			services.AddScoped<IBudgetService, BudgetService>();
+	        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+	        services.AddTransient<RoleInitializer>();
+			services.AddMvc();
+	        services.AddAutoMapper();
 
 	        services.AddIdentity<BudgetUser, IdentityRole>(config =>
 		        {
@@ -75,7 +80,7 @@ namespace BudgetingAPI
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, RoleInitializer roleInitializer)
         {
             loggerFactory.AddConsole(_config.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -95,6 +100,7 @@ namespace BudgetingAPI
 		        }
 	        });
 			app.UseMvc();
+	        roleInitializer.Seed();
         }
     }
 }

@@ -46,8 +46,11 @@
 						var userClaims = await _userManager.GetClaimsAsync(user);
 						var claims = new[]
 						{
+							new Claim(ClaimTypes.Name, user.UserName),
 							new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
 							new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+							new Claim(JwtRegisteredClaimNames.GivenName, user.UserName ),
+							new Claim(JwtRegisteredClaimNames.FamilyName, user.UserName),
 							new Claim(JwtRegisteredClaimNames.Email, user.Email),
 						}.Union(userClaims);
 						var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
@@ -82,7 +85,8 @@
 				try
 				{
 					var result = await _userManager.CreateAsync(user, model.Password);
-					if (result.Succeeded)
+					var roleResult = await _userManager.AddToRoleAsync(user, "Admin");
+					if (result.Succeeded && roleResult.Succeeded)
 					{
 						_logger.LogInformation(3, "User created a new account with password.");
 						return Ok();

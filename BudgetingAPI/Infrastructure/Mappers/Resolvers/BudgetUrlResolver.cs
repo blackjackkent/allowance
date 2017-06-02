@@ -7,7 +7,7 @@
 	using Microsoft.AspNetCore.Mvc;
 	using Models.DomainModels;
 
-	public class BudgetUrlResolver : IValueResolver<Entities.MonthlyBudget, MonthlyBudget, string>
+	public class BudgetUrlResolver : IValueResolver<Entities.Budget, Budget, string>
     {
 	    private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -15,10 +15,10 @@
 	    {
 		    _httpContextAccessor = httpContextAccessor;
 	    }
-	    public string Resolve(Entities.MonthlyBudget source, MonthlyBudget destination, string destMember, ResolutionContext context)
+	    public string Resolve(Entities.Budget source, Budget destination, string destMember, ResolutionContext context)
 	    {
 		    var url = (IUrlHelper)_httpContextAccessor.HttpContext.Items[BaseController.URL_HELPER];
-		    return url.Link("GetSingleBudget", new { id = source.MonthlyBudgetId });
+		    return url.Link("GetSingleBudget", new { id = source.BudgetId });
 	    }
 	}
 }

@@ -10,6 +10,6 @@
 		public DateTime TransactionDate { get; set; }
 		public decimal Value { get; set; }
 		public TransactionType TransactionType { get; set; }
-		public virtual MonthlyBudget Budget { get; set; }
+		public Guid BudgetId { get; set; }
     }
 }

@@ -9,8 +9,8 @@ using BudgetingAPI.Models;
 namespace BudgetingAPI.Migrations
 {
     [DbContext(typeof(BudgetContext))]
-    [Migration("20170524014803_AddingIdentity")]
-    partial class AddingIdentity
+    [Migration("20170601231531_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,9 +18,9 @@ namespace BudgetingAPI.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BudgetingAPI.Infrastructure.Entities.MonthlyBudget", b =>
+            modelBuilder.Entity("BudgetingAPI.Infrastructure.Entities.Budget", b =>
                 {
-                    b.Property<Guid>("MonthlyBudgetId")
+                    b.Property<Guid>("BudgetId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Month");
@@ -31,11 +31,11 @@ namespace BudgetingAPI.Migrations
 
                     b.Property<int>("Year");
 
-                    b.HasKey("MonthlyBudgetId");
+                    b.HasKey("BudgetId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MonthlyBudgets");
+                    b.ToTable("Budgets");
                 });
 
             modelBuilder.Entity("BudgetingAPI.Infrastructure.Entities.Transaction", b =>
@@ -43,7 +43,7 @@ namespace BudgetingAPI.Migrations
                     b.Property<Guid>("TransactionId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("BudgetMonthlyBudgetId");
+                    b.Property<Guid>("BudgetId");
 
                     b.Property<DateTime>("TransactionDate");
 
@@ -55,7 +55,7 @@ namespace BudgetingAPI.Migrations
 
                     b.HasKey("TransactionId");
 
-                    b.HasIndex("BudgetMonthlyBudgetId");
+                    b.HasIndex("BudgetId");
 
                     b.ToTable("Transactions");
                 });
@@ -232,7 +232,7 @@ namespace BudgetingAPI.Migrations
                     b.HasDiscriminator().HasValue("BudgetUser");
                 });
 
-            modelBuilder.Entity("BudgetingAPI.Infrastructure.Entities.MonthlyBudget", b =>
+            modelBuilder.Entity("BudgetingAPI.Infrastructure.Entities.Budget", b =>
                 {
                     b.HasOne("BudgetingAPI.Infrastructure.Entities.BudgetUser", "User")
                         .WithMany()
@@ -241,9 +241,10 @@ namespace BudgetingAPI.Migrations
 
             modelBuilder.Entity("BudgetingAPI.Infrastructure.Entities.Transaction", b =>
                 {
-                    b.HasOne("BudgetingAPI.Infrastructure.Entities.MonthlyBudget", "Budget")
+                    b.HasOne("BudgetingAPI.Infrastructure.Entities.Budget")
                         .WithMany("Transactions")
-                        .HasForeignKey("BudgetMonthlyBudgetId");
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

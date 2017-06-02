@@ -11,11 +11,15 @@ namespace BudgetingAPI.Infrastructure.Services
 
 	public interface IBudgetService
 	{
-		IEnumerable<MonthlyBudget> GetAllBudgets(IRepository<Entities.MonthlyBudget> budgetRepository, IMapper mapper);
+		IEnumerable<Budget> GetAllBudgets(string userId, IRepository<Entities.Budget> budgetRepository, IMapper mapper);
 
-		MonthlyBudget GetBudget(Guid id, IRepository<Entities.MonthlyBudget> budgetRepository, IMapper mapper);
+		Budget GetBudget(Guid id, string userId, IRepository<Entities.Budget> budgetRepository, IMapper mapper);
 
-		Task<MonthlyBudget> CreateBudget(MonthlyBudget budget, IRepository<Entities.MonthlyBudget> budgetRepository, IMapper mapper);
-		Task<MonthlyBudget> UpdateBudget(MonthlyBudget budgetToUpdate, IRepository<Entities.MonthlyBudget> budgetRepository, IMapper mapper);
+		Task<Budget> CreateBudget(Budget budget, IRepository<Entities.Budget> budgetRepository, IMapper mapper);
+		Task<Budget> UpdateBudget(Budget budgetToUpdate, IRepository<Entities.Budget> budgetRepository, IMapper mapper);
+		Task<Transaction> AddTransactionToBudget(Transaction transaction, Guid budgetId, IRepository<Entities.Transaction> transactionRepository, IMapper mapper);
+		IEnumerable<Transaction> GetTransactionsForBudget(Guid budgetId, IRepository<Entities.Transaction> transactionRepository, IMapper mapper);
+		Transaction GetTransaction(Guid id, Guid budgetId, IRepository<Entities.Transaction> transactionRepository, IMapper mapper);
+		Task<Transaction> UpdateTransaction(Transaction transaction, IRepository<Entities.Transaction> transactionRepository, IMapper mapper);
 	}
 }

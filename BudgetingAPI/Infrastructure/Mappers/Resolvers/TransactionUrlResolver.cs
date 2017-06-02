@@ -17,7 +17,7 @@
 		public string Resolve(Entities.Transaction source, Transaction destination, string destMember, ResolutionContext context)
 		{
 			var url = (IUrlHelper)_httpContextAccessor.HttpContext.Items[BaseController.URL_HELPER];
-			return url.Link("GetSingleTransaction", new { budgetId = source.Budget?.MonthlyBudgetId, id = source.TransactionId });
+			return url.Link("GetSingleTransaction", new { budgetId = source.BudgetId, id = source.TransactionId });
 		}
 	}
 }

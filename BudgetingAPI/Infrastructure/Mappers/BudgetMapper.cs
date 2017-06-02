@@ -4,13 +4,13 @@
 	using Models.DomainModels;
 	using Resolvers;
 
-	public class MonthlyBudgetMapper : Profile
+	public class BudgetMapper : Profile
     {
-	    public MonthlyBudgetMapper()
+	    public BudgetMapper()
 	    {
-		    CreateMap<MonthlyBudget, Entities.MonthlyBudget>()
+		    CreateMap<Budget, Entities.Budget>()
 			    .ReverseMap()
 			    .ForMember(s => s.ApiUrl, opt => opt.ResolveUsing<BudgetUrlResolver>());
-	    }
+		}
     }
 }

@@ -10,7 +10,7 @@
 	    {
 		    CreateMap<Transaction, Entities.Transaction>()
 			    .ReverseMap()
-			    .ForMember(s => s.ApiUrl, opt => opt.ResolveUsing<TransactionUrlResolver>());
+			    .ForMember(d => d.ApiUrl, opt => opt.ResolveUsing<TransactionUrlResolver>());
 		}
     }
 }
