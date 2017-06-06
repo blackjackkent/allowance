@@ -105,9 +105,7 @@
 		    try
 		    {
 			    var user = await _userManager.FindByNameAsync(User.Identity.Name);
-				var existingBudget = _budgetService.GetBudget(id, user.Id, _budgetRepository, _mapper);
-			    if (existingBudget == null)
-			    {
+				if (!_budgetService.UserOwnsBudget(user.Id, budget.BudgetId, _budgetRepository)) {
 				    return NotFound();
 			    }
 			    var updatedBudget = await _budgetService.UpdateBudget(budget, _budgetRepository, _mapper);
@@ -121,6 +119,33 @@
 			{
 				_logger.LogError($"Error updating budget: {e.Message}");
 				return BadRequest(e);
+		    }
+	    }
+
+
+
+	    [HttpDelete("{id}")]
+	    public async Task<IActionResult> Delete(Guid id)
+	    {
+		    _logger.LogInformation($"Updating transaction with id {id}");
+		    try
+		    {
+			    var user = await _userManager.FindByNameAsync(User.Identity.Name);
+			    if (!_budgetService.UserOwnsBudget(user.Id, id, _budgetRepository))
+			    {
+				    return Forbid();
+			    }
+			    var success = await _budgetService.DeleteBudget(id, _budgetRepository);
+			    if (success)
+			    {
+				    return Ok();
+			    }
+			    return BadRequest();
+		    }
+		    catch (Exception e)
+		    {
+			    _logger.LogError($"Error updating transaction: {e.Message}");
+			    return BadRequest(e);
 		    }
 	    }
 	}

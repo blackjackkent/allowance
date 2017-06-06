@@ -45,6 +45,17 @@
 		    return null;
 		}
 
+	    public async Task<bool> DeleteBudget(Guid id, IRepository<Entities.Budget> budgetRepository)
+	    {
+		    var entity = budgetRepository.GetSingle(b => b.BudgetId == id);
+		    budgetRepository.Delete(entity);
+		    if (await budgetRepository.SaveAllAsync())
+		    {
+			    return true;
+		    }
+		    return false;
+		}
+
 	    public async Task<Transaction> AddTransactionToBudget(Transaction transaction, Guid budgetId, IRepository<Entities.Transaction> transactionRepository, IMapper mapper)
 	    {
 		    var entity = mapper.Map<Entities.Transaction>(transaction);
@@ -80,5 +91,27 @@
 		    }
 		    return null;
 		}
+
+	    public async Task<bool> DeleteTransaction(Guid id, IRepository<Entities.Transaction> transactionRepository)
+	    {
+		    var entity = transactionRepository.GetSingle(b => b.TransactionId == id);
+		    transactionRepository.Delete(entity);
+		    if (await transactionRepository.SaveAllAsync())
+		    {
+			    return true;
+		    }
+		    return false;
+		}
+
+	    public bool BudgetHasTransaction(Guid budgetId, Guid transactionId, IRepository<Entities.Transaction> transactionRepository)
+		{
+			return transactionRepository.GetSingle(t => t.BudgetId == budgetId && t.TransactionId == transactionId) != null;
+		}
+
+	    public bool UserOwnsBudget(string userId, Guid budgetId, IRepository<Entities.Budget> budgetRepository)
+	    {
+		    return budgetRepository.GetSingle(b => b.BudgetId == budgetId && b.UserId == userId) != null;
+	    }
     }
 }
+ 

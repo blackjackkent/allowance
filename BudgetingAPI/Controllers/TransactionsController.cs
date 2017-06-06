@@ -16,22 +16,22 @@
 	[Authorize]
 	public class TransactionsController : BaseController
     {
-	    private readonly IRepository<Infrastructure.Entities.Budget> _budgetRepository;
 	    private readonly IBudgetService _budgetService;
 	    private readonly IMapper _mapper;
 	    private readonly ILogger<BudgetsController> _logger;
 	    private readonly UserManager<Infrastructure.Entities.BudgetUser> _userManager;
 	    private IRepository<Infrastructure.Entities.Transaction> _transactionRepository;
+	    private IRepository<Infrastructure.Entities.Budget> _budgetRepository;
 
-	    public TransactionsController(IRepository<Infrastructure.Entities.Budget> budgetRepository, IBudgetService budgetService, IMapper mapper,
-		    ILogger<BudgetsController> logger, UserManager<Infrastructure.Entities.BudgetUser> userManager, IRepository<Infrastructure.Entities.Transaction> transactionRepository)
+	    public TransactionsController(IBudgetService budgetService, IMapper mapper,
+		    ILogger<BudgetsController> logger, UserManager<Infrastructure.Entities.BudgetUser> userManager, IRepository<Infrastructure.Entities.Transaction> transactionRepository, IRepository<Infrastructure.Entities.Budget> budgetRepository)
 	    {
-		    _budgetRepository = budgetRepository;
 		    _budgetService = budgetService;
 		    _mapper = mapper;
 		    _logger = logger;
 		    _userManager = userManager;
 		    _transactionRepository = transactionRepository;
+		    _budgetRepository = budgetRepository;
 	    }
 
 		[HttpGet("")]
@@ -41,8 +41,7 @@
 		    {
 			    _logger.LogInformation($"Retrieving all transactions for budget {budgetId}");
 			    var user = await _userManager.FindByNameAsync(User.Identity.Name);
-			    var budget = _budgetService.GetBudget(budgetId, user.Id, _budgetRepository, _mapper);
-			    if (budget == null)
+			    if (!_budgetService.UserOwnsBudget(user.Id, budgetId, _budgetRepository))
 			    {
 				    return Forbid();
 			    }
@@ -63,13 +62,16 @@
 		    try
 		    {
 			    var user = await _userManager.FindByNameAsync(User.Identity.Name);
-			    var budget = _budgetService.GetBudget(budgetId, user.Id, _budgetRepository, _mapper);
-			    if (budget == null)
+			    if (!_budgetService.UserOwnsBudget(user.Id, budgetId, _budgetRepository))
 			    {
 				    return NotFound();
 			    }
 			    var transaction = _budgetService.GetTransaction(id, budgetId, _transactionRepository, _mapper);
-			    return Ok(transaction);
+			    if (transaction != null)
+			    {
+					return Ok(transaction);
+			    }
+			    return NotFound();
 		    }
 		    catch (Exception e)
 		    {
@@ -85,12 +87,11 @@
 		    try
 		    {
 			    var user = await _userManager.FindByNameAsync(User.Identity.Name);
-			    var budget = _budgetService.GetBudget(budgetId, user.Id, _budgetRepository, _mapper);
-			    if (budget == null)
+			    if (!_budgetService.UserOwnsBudget(user.Id, budgetId, _budgetRepository))
 			    {
 				    return Forbid();
 			    }
-			    var createdTransaction = await _budgetService.AddTransactionToBudget(transaction, budget.BudgetId, _transactionRepository, _mapper);
+			    var createdTransaction = await _budgetService.AddTransactionToBudget(transaction, budgetId, _transactionRepository, _mapper);
 			    if (createdTransaction != null)
 			    {
 				    return Created(createdTransaction.ApiUrl, createdTransaction);
@@ -104,22 +105,18 @@
 		    }
 	    }
 
-
-
 	    [HttpPut("{id}")]
 	    public async Task<IActionResult> Put(Guid budgetId, Guid id, [FromBody] Transaction transaction)
 	    {
-		    _logger.LogInformation($"Updating budget with id {id}");
+		    _logger.LogInformation($"Updating transaction with id {id}");
 		    try
 		    {
 			    var user = await _userManager.FindByNameAsync(User.Identity.Name);
-			    var existingBudget = _budgetService.GetBudget(budgetId, user.Id, _budgetRepository, _mapper);
-			    if (existingBudget == null)
+			    if (!_budgetService.UserOwnsBudget(user.Id, budgetId, _budgetRepository))
 			    {
 				    return Forbid();
 			    }
-			    var existingTransaction = _budgetService.GetTransaction(id, budgetId, _transactionRepository, _mapper);
-			    if (existingTransaction == null)
+			    if (!_budgetService.BudgetHasTransaction(budgetId, id, _transactionRepository))
 			    {
 				    return NotFound();
 			    }
@@ -132,7 +129,36 @@
 		    }
 		    catch (Exception e)
 		    {
-			    _logger.LogError($"Error updating budget: {e.Message}");
+			    _logger.LogError($"Error updating transaction: {e.Message}");
+			    return BadRequest(e);
+		    }
+	    }
+
+	    [HttpDelete("{id}")]
+	    public async Task<IActionResult> Delete(Guid budgetId, Guid id)
+	    {
+		    _logger.LogInformation($"Updating transaction with id {id}");
+		    try
+		    {
+			    var user = await _userManager.FindByNameAsync(User.Identity.Name);
+			    if (!_budgetService.UserOwnsBudget(user.Id, budgetId, _budgetRepository))
+			    {
+				    return Forbid();
+			    }
+			    if (!_budgetService.BudgetHasTransaction(budgetId, id, _transactionRepository))
+			    {
+				    return NotFound();
+			    }
+			    var success = await _budgetService.DeleteTransaction(id, _transactionRepository);
+			    if (success)
+			    {
+				    return Ok();
+			    }
+			    return BadRequest();
+		    }
+		    catch (Exception e)
+		    {
+			    _logger.LogError($"Error updating transaction: {e.Message}");
 			    return BadRequest(e);
 		    }
 	    }
