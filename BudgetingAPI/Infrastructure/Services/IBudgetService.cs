@@ -11,11 +11,9 @@ namespace BudgetingAPI.Infrastructure.Services
 
 	public interface IBudgetService
 	{
-		IEnumerable<Budget> GetAllBudgets(string userId, IRepository<Entities.Budget> budgetRepository, IMapper mapper);
-		Budget GetBudget(Guid id, string userId, IRepository<Entities.Budget> budgetRepository, IMapper mapper);
+		Budget GetBudget(string userId, int monthId, IRepository<Entities.Budget> budgetRepository, IRepository<Entities.Transaction> transactionRepository, IMapper mapper);
 		Task<Budget> CreateBudget(Budget budget, IRepository<Entities.Budget> budgetRepository, IMapper mapper);
 		Task<Budget> UpdateBudget(Budget budgetToUpdate, IRepository<Entities.Budget> budgetRepository, IMapper mapper);
-		Task<bool> DeleteBudget(Guid id, IRepository<Entities.Budget> budgetRepository);
 		Task<Transaction> AddTransactionToBudget(Transaction transaction, Guid budgetId, IRepository<Entities.Transaction> transactionRepository, IMapper mapper);
 		IEnumerable<Transaction> GetTransactionsForBudget(Guid budgetId, IRepository<Entities.Transaction> transactionRepository, IMapper mapper);
 		Transaction GetTransaction(Guid id, Guid budgetId, IRepository<Entities.Transaction> transactionRepository, IMapper mapper);

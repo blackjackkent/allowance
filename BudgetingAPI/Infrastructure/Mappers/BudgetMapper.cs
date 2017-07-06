@@ -1,5 +1,6 @@
 ﻿namespace BudgetingAPI.Infrastructure.Mappers
 {
+	using System.Linq;
 	using AutoMapper;
 	using Models.DomainModels;
 	using Resolvers;
@@ -10,7 +11,7 @@
 	    {
 		    CreateMap<Budget, Entities.Budget>()
 			    .ReverseMap()
-			    .ForMember(s => s.ApiUrl, opt => opt.ResolveUsing<BudgetUrlResolver>());
+			    .ForMember(d => d.ApiUrl, opt => opt.ResolveUsing<BudgetUrlResolver>());
 		}
     }
 }

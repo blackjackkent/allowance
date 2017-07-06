@@ -51,6 +51,7 @@ namespace BudgetingAPI
 			services.AddScoped<IBudgetService, BudgetService>();
 	        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 	        services.AddTransient<RoleInitializer>();
+	        services.AddCors();
 			services.AddMvc();
 	        services.AddAutoMapper();
 
@@ -99,8 +100,10 @@ namespace BudgetingAPI
 			        ValidateLifetime = true
 		        }
 	        });
+	        app.UseCors(builder =>
+		        builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
 			app.UseMvc();
-	        roleInitializer.Seed();
+	        roleInitializer.Seed().Wait();
         }
     }
 }

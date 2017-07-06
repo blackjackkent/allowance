@@ -10,16 +10,17 @@
 
 	public class BudgetService : IBudgetService
     {
-	    public IEnumerable<Budget> GetAllBudgets(string userId, IRepository<Entities.Budget> budgetRepository, IMapper mapper)
+	    public Budget GetBudget(string userId, int monthId, IRepository<Entities.Budget> budgetRepository, IRepository<Entities.Transaction> transactionRepository, IMapper mapper)
 	    {
-		    var entities =  budgetRepository.Get(b => b.UserId == userId);
-		    return mapper.Map<IEnumerable<Entities.Budget>, IEnumerable<Budget>>(entities);
-	    }
-
-	    public Budget GetBudget(Guid id, string userId, IRepository<Entities.Budget> budgetRepository, IMapper mapper)
-	    {
-		    var entity = budgetRepository.GetSingle(b => b.BudgetId == id && b.UserId == userId);
-		    return entity == null ? null : mapper.Map<Entities.Budget, Budget>(entity);
+		    var entity = budgetRepository.GetSingle(b => b.UserId == userId);
+		    if (entity == null)
+		    {
+			    return null;
+		    }
+		    var budget = mapper.Map<Entities.Budget, Budget>(entity);
+		    var childEntities = transactionRepository.Get(t => t.BudgetId == budget.BudgetId && t.TransactionDate.Month == monthId).ToList();
+		    budget.Transactions = mapper.Map<List<Entities.Transaction>, List<Transaction>>(childEntities);
+		    return budget;
 	    }
 
 	    public async Task<Budget> CreateBudget(Budget budget, IRepository<Entities.Budget> budgetRepository, IMapper mapper)
@@ -43,17 +44,6 @@
 			    return mapper.Map<Budget>(entity);
 		    }
 		    return null;
-		}
-
-	    public async Task<bool> DeleteBudget(Guid id, IRepository<Entities.Budget> budgetRepository)
-	    {
-		    var entity = budgetRepository.GetSingle(b => b.BudgetId == id);
-		    budgetRepository.Delete(entity);
-		    if (await budgetRepository.SaveAllAsync())
-		    {
-			    return true;
-		    }
-		    return false;
 		}
 
 	    public async Task<Transaction> AddTransactionToBudget(Transaction transaction, Guid budgetId, IRepository<Entities.Transaction> transactionRepository, IMapper mapper)
