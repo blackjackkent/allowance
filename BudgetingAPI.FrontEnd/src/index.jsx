@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import HomePage from './components/homePage.jsx';
+import HomePage from './components/home/homePage.jsx';
 import LoginPage from './components/loginPage.jsx'
 
 class App extends Component {
