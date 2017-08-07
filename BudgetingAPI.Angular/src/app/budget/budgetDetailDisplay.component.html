@@ -1,0 +1,18 @@
+<div class="budget-display row">
+    <div class="col-md-3">
+        <h2>July, 2017</h2>
+        <p>Planned savings: {{budget.savings | currency:'USD':true}}</p>
+    </div>
+    <div class="col-md-3 detail-item">
+        <p class="heading">Planned Income</p>
+        <p class="value">{{budget.incomeTotal | currency:'USD':true}}</p>
+    </div>
+    <div class="col-md-3 detail-item">
+        <p class="heading">Planned Bills</p>
+        <p class="value">{{budget.billTotal | currency:'USD':true}}</p>
+    </div>
+    <div class="col-md-3 detail-item">
+        <p class="heading">Expenses To Date</p>
+        <p class="value">{{budget.expenseTotal | currency:'USD':true}}</p>
+    </div>
+</div>

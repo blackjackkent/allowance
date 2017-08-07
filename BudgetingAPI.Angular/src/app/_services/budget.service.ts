@@ -12,18 +12,10 @@ export class BudgetService {
 	constructor(private http: Http, private authenticationService: AuthenticationService,
 		private errorHandler: ErrorHandlerService) { }
 
-	getAllBudgets(): Observable<Array<Budget>> {
+	getBudget(): Observable<Budget> {
 		const headers: Headers = new Headers({ Authorization: 'Bearer ' + this.authenticationService.token });
 		const options: RequestOptions = new RequestOptions({ headers: headers });
 		return this.http.get('http://localhost:32676/api/budgets', options)
-			.map((response: Response) => response.json())
-			.catch(e => this.errorHandler.handleError(e));
-	}
-
-	createBudget(budget: Budget): Observable<Budget> {
-		const headers: Headers = new Headers({ Authorization: 'Bearer ' + this.authenticationService.token });
-		const options: RequestOptions = new RequestOptions({ headers: headers });
-		return this.http.post('http://localhost:32676/api/budgets', budget, options)
 			.map((response: Response) => response.json())
 			.catch(e => this.errorHandler.handleError(e));
 	}

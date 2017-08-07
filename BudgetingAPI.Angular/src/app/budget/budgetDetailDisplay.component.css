@@ -1,0 +1,17 @@
+.budget-display {
+    padding: 30px;
+    background: #def;
+    text-align: center;
+}
+
+.budget-display h2 {
+    margin-top: 10px
+}
+
+.budget-display .detail-item .heading {
+    font-size: 14px;
+}
+
+.budget-display .detail-item .value {
+    font-size: 32px;
+}

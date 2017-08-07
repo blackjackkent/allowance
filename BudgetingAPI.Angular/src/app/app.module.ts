@@ -1,3 +1,5 @@
+import { TotalRowComponent } from './budget/totalRow.component';
+import { NavComponent } from './nav/nav.component';
 import { BudgetDetailDisplayComponent } from './budget/budgetDetailDisplay.component';
 import { BudgetDateDisplayPipe } from './_pipes/budgetDateDisplay.pipe';
 import { ErrorHandlerService } from './_services/errorHandler.service';
@@ -20,7 +22,9 @@ import { BudgetService } from 'app/_services/budget.service';
 		LoginComponent,
 		HomeComponent,
 		BudgetDetailDisplayComponent,
-		BudgetDateDisplayPipe
+		BudgetDateDisplayPipe,
+		NavComponent,
+		TotalRowComponent
 	],
 	imports: [
 		BrowserModule,

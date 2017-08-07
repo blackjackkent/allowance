@@ -5,17 +5,11 @@ import { Budget } from 'app/_models/budget';
 @Component({
 	selector: 'app-budget-detail-display',
 	moduleId: module.id,
-	templateUrl: 'budgetDetailDisplay.component.html'
+	templateUrl: 'budgetDetailDisplay.component.html',
+	styleUrls: ['./budgetDetailDisplay.component.css']
 })
-export class BudgetDetailDisplayComponent implements OnInit {
+export class BudgetDetailDisplayComponent {
 	@Input() budget: Budget;
-	budgetIncomeTotal: number;
-	budgetBillsTotal: number;
-	budgetExpensesTotal: number;
 
-	constructor(private budgetService: BudgetService) { }
-
-	ngOnInit() {
-
-	}
+	constructor() { }
 }
