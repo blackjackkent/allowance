@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'
+
 import BudgetApi from '../../api/budgetApi';
+import Nav from '../shared/nav.jsx';
+import BudgetControlRow from './budgetControlRow.jsx';
 import BudgetHeader from './budgetHeader.jsx';
+import BudgetTotalRow from './budgetTotalRow.jsx';
 
 class HomePage extends Component {
 	constructor() {
@@ -10,16 +12,17 @@ class HomePage extends Component {
 		this.state = {
 			budget: {}
 		};
-		let component = this;
-		BudgetApi.getBudget().then(function (budget) {
-			component.state.budget = budget;
-		})
+		BudgetApi.getBudget().then((budget) => {
+			this.setState({ budget: budget });
+		});
 	}
 	render() {
 		return (
-			<div>
-				<h1>This is the home page</h1>
+			<div className="row">
+				<Nav />
 				<BudgetHeader budget={this.state.budget} />
+				<BudgetTotalRow budget={this.state.budget} />
+				<BudgetControlRow />
 			</div>
 		);
 	}
