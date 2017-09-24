@@ -10,17 +10,11 @@ const StyledContainer = styled.div`
 class ContentContainer extends Component {
 	constructor() {
 		super();
-		this.state = {
-			budget: {}
-		};
-		// BudgetApi.getBudget().then((budget) => {
-		// 	this.setState({ budget: budget });
-		// });
 	}
 	render() {
 		return (
 			<StyledContainer>
-				<Header headerTitle={this.props.headerTitle} />
+				<Header headerTitle={this.props.headerTitle} user={this.props.user} />
 				{this.props.children}
 			</StyledContainer>
 		);

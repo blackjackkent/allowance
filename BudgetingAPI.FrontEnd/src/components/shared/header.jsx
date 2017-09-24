@@ -21,7 +21,7 @@ class Header extends Component {
 	render() {
 		return (
 			<HeaderRow>
-				<p className="loggedInUser">rosalind.m.wills@gmail.com (<Link to="/logout">Log Out <i className="fa fa-sign-out" aria-hidden="true"></i></Link>)</p>
+				<p className="loggedInUser">{this.props.user ? this.props.user.userName : ''} (<Link to="/logout">Log Out <i className="fa fa-sign-out" aria-hidden="true"></i></Link>)</p>
 				<h1>{this.props.headerTitle}</h1>
 			</HeaderRow>
 		);
