@@ -5,7 +5,7 @@ import NumberFormat from 'react-number-format';
 
 const Row = styled.div`
 	padding: 30px;
-	background: #def;
+	background: #F4F4F9;
 	text-align: center;
 `;
 const RowHeading = styled.h2`

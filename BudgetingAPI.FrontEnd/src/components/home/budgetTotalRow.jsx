@@ -6,9 +6,11 @@ import NumberFormat from 'react-number-format';
 const TotalSpendRow = styled.div`
 	text-align: center;
     color: #efefff;
-    background: #123;
+    background: #4C4C4C;
     font-size: 30px;
-    padding: 10px;
+	padding: 10px;
+	height: 65px;
+	border-bottom: 1px solid #94A3Ab;
 `;
 
 class BudgetTotalRow extends Component {

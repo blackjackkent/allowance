@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 
 import BudgetApi from '../../api/budgetApi';
-import Nav from '../shared/nav.jsx';
+import Header from '../shared/header.jsx';
 import BudgetControlRow from './budgetControlRow.jsx';
 import BudgetHeader from './budgetHeader.jsx';
 import BudgetTotalRow from './budgetTotalRow.jsx';
+import SideNavigation from '../shared/sideNavigation.jsx';
+import ContentContainer from '../shared/contentContainer.jsx';
+import styled from 'styled-components';
 
 class HomePage extends Component {
 	constructor() {
@@ -18,11 +21,15 @@ class HomePage extends Component {
 	}
 	render() {
 		return (
-			<div className="row">
-				<Nav />
-				<BudgetHeader budget={this.state.budget} />
-				<BudgetTotalRow budget={this.state.budget} />
-				<BudgetControlRow />
+			<div>
+				<SideNavigation className="col-md-2" />
+				<ContentContainer headerTitle="Dashboard">
+					<BudgetTotalRow budget={this.state.budget} />
+					<BudgetHeader budget={this.state.budget} />
+				</ContentContainer>
+				{/* <BudgetHeader budget={this.state.budget} />
+				
+				<BudgetControlRow /> */}
 			</div>
 		);
 	}
