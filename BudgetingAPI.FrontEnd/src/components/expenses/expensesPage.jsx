@@ -12,8 +12,9 @@ class ExpensesPage extends Component {
 	constructor() {
 		super();
 		this.state = {
-			budget: {}
-		};
+			budget: {},
+			user: {}
+		}
 	}
 	componentDidMount() {
 		BudgetApi.getBudget().then((budget) => {

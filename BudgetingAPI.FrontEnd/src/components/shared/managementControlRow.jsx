@@ -35,10 +35,9 @@ const StyledControlRow = styled.div`
 
 class ManagementControlRow extends Component {
 	render() {
-		var createLink = "/add-transaction/" + this.props.transactionType;
 		return (
 			<StyledControlRow>
-				<Link to={createLink}>New <i className="fa fa-plus-circle"></i></Link>
+				<Link to="add-transaction">New <i className="fa fa-plus-circle"></i></Link>
 				<Link to="#" className={(this.props.selectedTransactions ? '' : 'disabled')}>Delete Selected <i className="fa fa-times-circle"></i></Link>
 			</StyledControlRow>
 		);

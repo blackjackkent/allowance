@@ -3,23 +3,19 @@ import styled from 'styled-components';
 
 import BudgetApi from '../../api/budgetApi';
 import UserApi from '../../api/userApi';
-import BudgetHeader from './budgetHeader.jsx';
-import BudgetTotalRow from './budgetTotalRow.jsx';
 import SideNavigation from '../shared/sideNavigation.jsx';
 import ContentContainer from '../shared/contentContainer.jsx';
+import ManagementControlRow from '../shared/managementControlRow.jsx';
+import ManagementDataTable from '../shared/managementDataTable.jsx';
 
-class HomePage extends Component {
+class AddTransactionPage extends Component {
 	constructor() {
 		super();
 		this.state = {
-			budget: {},
 			user: {}
 		}
 	}
 	componentDidMount() {
-		BudgetApi.getBudget().then((budget) => {
-			this.setState({ budget: budget });
-		});
 		UserApi.getCurrentUser().then((user) => {
 			this.setState({ user: user });
 		});
@@ -28,13 +24,12 @@ class HomePage extends Component {
 		return (
 			<div>
 				<SideNavigation className="col-md-2" />
-				<ContentContainer headerTitle="Dashboard" user={this.state.user}>
-					<BudgetTotalRow budget={this.state.budget} />
-					<BudgetHeader budget={this.state.budget} />
+				<ContentContainer headerTitle="Expenses" user={this.state.user}>
+					<AddTransactionForm />
 				</ContentContainer>
 			</div>
 		);
 	}
 }
 
-export default HomePage;
+export default AddTransactionPage;
