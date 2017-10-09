@@ -9,10 +9,13 @@ var config = {
 		filename: 'bundle.js'
 	},
 	module: {
-		loaders: [{
+		rules: [{
 			test: /\.jsx?/,
 			include: APP_DIR,
 			loader: 'babel-loader'
+		}, {
+			test: /\.css$/,
+			use: ['style-loader', 'css-loader']
 		}]
 	}
 };

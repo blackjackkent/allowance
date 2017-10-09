@@ -16,7 +16,7 @@ class App extends Component {
 				<Switch>
 					<Route exact path='/' component={HomePage} />
 					<Route exact path='/expenses' component={ExpensesPage} />
-					<Route exact path='/add-transaction' component={AddTransactionPage} />
+					<Route path={'/add-transaction/:transactionType'} component={AddTransactionPage} />
 					<Route exact path='/login' component={LoginPage} />
 					<Route exact path='/logout' component={LogoutPage} />
 				</Switch>
