@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import styled from 'styled-components';
 import NumberFormat from 'react-number-format';
+import Moment from 'react-moment';
 
 const Row = styled.div`
 	padding: 30px;
@@ -15,7 +16,7 @@ const ItemHeading = styled.p`
 	font-size: 14px;
 `;
 const ItemValue = styled.p`
-	font-size: 32px;
+	font-size: 28px;
 `;
 
 class BudgetHeader extends Component {
@@ -23,8 +24,8 @@ class BudgetHeader extends Component {
 		return (
 			<Row className="row">
 				<div className="col-md-3">
-					<RowHeading>July, 2017</RowHeading>
-					<p>Planned savings: <NumberFormat value={this.props.budget.savings} displayType={'text'} thousandSeparator={true} prefix={'$'} decimalPrecision={2} /></p>
+					<RowHeading><Moment date={new Date()} format="MMMM, YYYY" /></RowHeading>
+					<p>Desired savings: <NumberFormat value={this.props.budget.savings} displayType={'text'} thousandSeparator={true} prefix={'$'} decimalPrecision={2} /></p>
 				</div>
 				<div className="col-md-3">
 					<ItemHeading>Planned Income</ItemHeading>
