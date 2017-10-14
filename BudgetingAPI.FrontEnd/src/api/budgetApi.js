@@ -42,6 +42,16 @@ class BudgetApi {
 	static getTransactionTypeById(transactionTypeId) {
 		return BudgetApi.getTransactionTypes().find(t => t.id == transactionTypeId);
 	}
+
+	static deleteTransactions(budgetId, transactions) {
+		let promises = [];
+		for (const transaction of transactions) {
+			promises.push(new Promise((resolve, reject) => {
+				AxiosHttp.delete(`http://localhost:32676/api/budgets/${budgetId}/transactions/${transaction.transactionId}`).then(resolve, reject);
+			}))
+		}
+		return Promise.all(promises);
+	}
 }
 
 export default BudgetApi;

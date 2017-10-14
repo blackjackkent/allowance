@@ -14,8 +14,11 @@ class ExpensesPage extends Component {
 		this.state = {
 			budget: {},
 			user: {},
-			transactionType: {}
+			transactionType: {},
+			selectedRows: []
 		}
+		this.onRowSelectionToggle = this.onRowSelectionToggle.bind(this);
+		this.onDeleteRows = this.onDeleteRows.bind(this);
 	}
 
 	componentDidMount() {
@@ -43,13 +46,33 @@ class ExpensesPage extends Component {
 		});
 	}
 
+	onRowSelectionToggle(event, transaction) {
+		let selectedRows = this.state.selectedRows;
+		if (selectedRows.includes(transaction)) {
+			selectedRows = selectedRows.filter(t => t !== transaction);
+			this.setState({ selectedRows: selectedRows });
+			return;
+		}
+		selectedRows.push(transaction);
+		this.setState({ selectedRows: selectedRows });
+	}
+
+	onDeleteRows(event) {
+		this.setState({ isLoading: true });
+		BudgetApi.deleteTransactions(this.state.budget.budgetId, this.state.selectedRows).then(() => {
+			BudgetApi.getBudget().then((budget) => {
+				this.setState({ budget: budget, isLoading: false, selectedRows: [] });
+			});
+		});
+	}
+
 	render() {
 		return (
 			<div>
 				<SideNavigation className="col-md-2" />
 				<ContentContainer headerTitle={this.state.transactionType.title} user={this.state.user}>
-					<ManagementControlRow transactionType={this.state.transactionType.id} />
-					<ManagementDataTable transactions={this.state.budget.transactions} transactionType={this.state.transactionType.id} />
+					<ManagementControlRow transactionType={this.state.transactionType.id} onDeleteRows={this.onDeleteRows} isDeleteDisabled={this.state.selectedRows.length} isLoading={this.state.isLoading} />
+					<ManagementDataTable transactions={this.state.budget.transactions} transactionType={this.state.transactionType.id} onRowSelectionToggle={this.onRowSelectionToggle} />
 				</ContentContainer>
 			</div>
 		);

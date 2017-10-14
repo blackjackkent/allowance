@@ -12,7 +12,7 @@ const StyledControlRow = styled.div`
 	height: 65px;
 	padding: 10px;
 	margin-bottom: 20px;
-	a {
+	a, button {
 		display: inline-block;
 		padding: 10px 30px;
 		background: #fff;
@@ -30,7 +30,9 @@ const StyledControlRow = styled.div`
 			background: #dedee3;
 			color: #94a3ab;
 		}
+		border:none;
 	}
+	.hidden { display: none; }
 `;
 
 class ManagementControlRow extends Component {
@@ -38,7 +40,8 @@ class ManagementControlRow extends Component {
 		return (
 			<StyledControlRow>
 				<Link to={"/add-transaction/" + this.props.transactionType}>New <i className="fa fa-plus-circle"></i></Link>
-				<Link to="#" className={(this.props.selectedTransactions ? '' : 'disabled')}>Delete Selected <i className="fa fa-times-circle"></i></Link>
+				<button className={(this.props.isDeleteDisabled ? '' : 'disabled')} onClick={this.props.onDeleteRows}>Delete Selected <i className="fa fa-times-circle"></i></button>
+				<img src="/img/loading.gif" className={(this.props.isLoading) ? '' : 'hidden'} />
 			</StyledControlRow>
 		);
 	}

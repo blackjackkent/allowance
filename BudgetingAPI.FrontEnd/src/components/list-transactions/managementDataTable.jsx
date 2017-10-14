@@ -23,13 +23,13 @@ class ManagementDataTable extends Component {
 		var rows = [];
 		var transactions = this.props.transactions.filter((transaction) => transaction.transactionType === parseInt(this.props.transactionType));
 		for (var i = 0; i < transactions.length; i++) {
-			rows.push(<ManagementDataTableRow transaction={transactions[i]} key={transactions[i].transactionId} />);
+			rows.push(<ManagementDataTableRow transaction={transactions[i]} key={transactions[i].transactionId} onRowSelectionToggle={this.props.onRowSelectionToggle} />);
 		}
 		return (
 			<StyledDataTable>
 				<table className="table table-responsive table-striped">
 					<thead>
-						<tr><th>Transaction Name</th><th>Transaction Date</th><th>Transaction Amount</th></tr>
+						<tr><th /><th>Transaction Name</th><th>Transaction Date</th><th>Transaction Amount</th></tr>
 					</thead>
 					<tbody>
 						{rows}
