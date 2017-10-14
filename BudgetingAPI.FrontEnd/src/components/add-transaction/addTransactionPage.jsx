@@ -27,7 +27,6 @@ class AddTransactionPage extends Component {
 
 	onSubmit(event, transaction) {
 		event.preventDefault();
-		console.log(transaction);
 		BudgetApi.addTransaction(this.state.budget.budgetId, transaction).then(function (data) {
 			if (transaction.TransactionType == 1)
 				return window.location.href = '/income';
