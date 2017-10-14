@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Route, Redirect } from 'react-router'
 import styled from 'styled-components';
 
 import BudgetApi from '../../api/budgetApi';
@@ -27,17 +28,18 @@ class AddTransactionPage extends Component {
 
 	onSubmit(event, transaction) {
 		event.preventDefault();
+		let component = this;
 		BudgetApi.addTransaction(this.state.budget.budgetId, transaction).then(function (data) {
-			if (transaction.TransactionType == 1)
-				return window.location.href = '/income';
-			if (transaction.TransactionType == 2)
-				return window.location.href = '/bills';
-			if (transaction.TransactionType == 3)
-				return window.location.href = '/expenses';
+			let transactionType = BudgetApi.getTransactionTypeById(transaction.TransactionType);
+			component.setState({ submitted: true, submittedTransactionType: transactionType })
 		});
 	}
 
 	render() {
+		if (this.state.submitted) {
+			return <Redirect to={`/list-transactions/${this.state.submittedTransactionType.key}`} />
+		}
+
 		return (
 			<div>
 				<SideNavigation className="col-md-2" />

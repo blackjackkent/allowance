@@ -14,6 +14,34 @@ class BudgetApi {
 				return response.data;
 			});
 	}
+
+	static getTransactionTypes() {
+		return [
+			{
+				id: 1,
+				key: "income",
+				title: "Income"
+			},
+			{
+				id: 2,
+				key: "bill",
+				title: "Bills"
+			},
+			{
+				id: 3,
+				key: "expense",
+				title: "Expenses"
+			}
+		]
+	}
+
+	static getTransactionTypeByKey(transactionTypeKey) {
+		return BudgetApi.getTransactionTypes().find(t => t.key == transactionTypeKey);
+	}
+
+	static getTransactionTypeById(transactionTypeId) {
+		return BudgetApi.getTransactionTypes().find(t => t.id == transactionTypeId);
+	}
 }
 
 export default BudgetApi;

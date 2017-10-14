@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import HomePage from './components/home/homePage.jsx';
-import ExpensesPage from './components/expenses/expensesPage.jsx';
+import ListTransactionsPage from './components/list-transactions/listTransactionsPage.jsx';
 import AddTransactionPage from './components/add-transaction/addTransactionPage.jsx';
 import LoginPage from './components/login/loginPage.jsx';
 import LogoutPage from './components/login/logoutPage.jsx';
@@ -15,7 +15,7 @@ class App extends Component {
 			<div className="row">
 				<Switch>
 					<Route exact path='/' component={HomePage} />
-					<Route exact path='/expenses' component={ExpensesPage} />
+					<Route exact path='/list-transactions/:transactionType' component={ListTransactionsPage} />
 					<Route path={'/add-transaction/:transactionType'} component={AddTransactionPage} />
 					<Route exact path='/login' component={LoginPage} />
 					<Route exact path='/logout' component={LogoutPage} />

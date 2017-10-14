@@ -92,13 +92,13 @@ class SideNavigation extends Component {
 						<i className="fa fa-money" aria-hidden="true"></i>Manage
 						<NavColumnMenu>
 							<NavColumnMenuItem className="sub">
-								<Link to="/expenses">Recorded Expenses</Link>
+								<Link to="/list-transactions/expense">Recorded Expenses</Link>
 							</NavColumnMenuItem>
 							<NavColumnMenuItem className="sub">
-								<Link to="/income">Expected Income</Link>
+								<Link to="/list-transactions/income">Expected Income</Link>
 							</NavColumnMenuItem>
 							<NavColumnMenuItem className="sub">
-								<Link to="/bills">Expected Bills</Link>
+								<Link to="/list-transactions/bill">Expected Bills</Link>
 							</NavColumnMenuItem>
 							<NavColumnMenuItem className="sub">
 								<Link to="/savings">Desired Savings</Link>
