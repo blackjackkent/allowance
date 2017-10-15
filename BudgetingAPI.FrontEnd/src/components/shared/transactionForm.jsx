@@ -14,25 +14,43 @@ const AddTransactionFormContainer = styled.div`
 	}
 `;
 
-class AddTransactionForm extends Component {
-	constructor() {
-		super();
+class TransactionForm extends Component {
+	constructor(props) {
+		super(props);
 		this.state = {
-			newTransaction: {}
+			transaction: {
+				"transactionId": null,
+				"transactionName": "",
+				"transactionType": 1,
+				"transactionDate": new Date(),
+				"value": 0
+			}
 		}
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleDateChange = this.handleDateChange.bind(this);
 	}
 
 	componentDidMount() {
-		this.setState({
-			newTransaction: {
-				"TransactionName": "",
-				"TransactionType": this.props.transactionType,
-				"TransactionDate": new Date(),
-				"Value": 0
-			}
-		})
+		if (this.props.transaction && this.props.transactionId) {
+			this.setState({
+				transaction: this.props.transaction
+			})
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.transaction && nextProps.transaction.transactionId !== this.state.transaction.transactionId) {
+			this.setState({
+				transaction: nextProps.transaction
+			})
+		}
+		if (nextProps.transactionType && nextProps.transactionType != this.state.transaction.transactionType) {
+			let currentTransaction = this.state.transaction;
+			currentTransaction.transactionType = nextProps.transactionType;
+			this.setState({
+				transaction: currentTransaction
+			});
+		}
 	}
 
 	handleInputChange(event) {
@@ -40,38 +58,37 @@ class AddTransactionForm extends Component {
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
 		this.setState({
-			newTransaction: Object.assign({}, this.state.newTransaction, {
+			transaction: Object.assign({}, this.state.transaction, {
 				[name]: value,
 			}),
 		});
 	}
 
 	handleDateChange(momentEvent) {
-		const value =
-			this.setState({
-				newTransaction: Object.assign({}, this.state.newTransaction, {
-					TransactionDate: momentEvent.toDate(),
-				})
+		this.setState({
+			transaction: Object.assign({}, this.state.transaction, {
+				TransactionDate: momentEvent.toDate(),
 			})
+		})
 	}
 
 	render() {
 		return (
 			<AddTransactionFormContainer className="container">
-				<form onSubmit={(event) => this.props.onSubmit(event, this.state.newTransaction)}>
+				<form onSubmit={(event) => this.props.onSubmit(event, this.state.transaction)}>
 					<div className="row">
 						<div className="col-md-12">
 							<div className="form-group">
-								<label htmlFor="TransactionName">Transaction Name</label>
-								<input type="text" className="form-control" name="TransactionName" placeholder="Transaction Name" onChange={this.handleInputChange} />
+								<label htmlFor="transactionName">Transaction Name</label>
+								<input type="text" className="form-control" name="transactionName" value={this.state.transaction.transactionName} placeholder="Transaction Name" onChange={this.handleInputChange} />
 							</div>
 						</div>
 					</div>
 					<div className="row">
 						<div className="col-md-4">
 							<div className="form-group">
-								<label htmlFor="TransactionType">Transaction Type </label>
-								<select className="form-control" value={this.state.newTransaction.TransactionType} name="TransactionType" onChange={this.handleInputChange}>
+								<label htmlFor="transactionType">Transaction Type </label>
+								<select className="form-control" value={this.state.transaction.transactionType} name="transactionType" onChange={this.handleInputChange}>
 									<option value="1">Income</option>
 									<option value="2">Bill</option>
 									<option value="3">Expense</option>
@@ -80,10 +97,10 @@ class AddTransactionForm extends Component {
 						</div>
 						<div className="col-md-4">
 							<div className="form-group">
-								<label htmlFor="TransactionAmount">Transaction Amount </label>
+								<label htmlFor="transactionAmount">Transaction Amount </label>
 								<div className="input-group">
 									<span className="input-group-addon">$</span>
-									<input type="number" className="form-control" placeholder="Transaction Amount" name="Value" onChange={this.handleInputChange} />
+									<input type="number" className="form-control" placeholder="Transaction Amount" name="value" value={this.state.transaction.value} onChange={this.handleInputChange} />
 								</div>
 							</div>
 						</div>
@@ -91,7 +108,7 @@ class AddTransactionForm extends Component {
 							<div className="form-group">
 								<label htmlFor="TransactionDate">Transaction Date </label>
 								<DatePicker name="TransactionDate" className="form-control"
-									selected={moment(this.state.newTransaction.TransactionDate)}
+									selected={moment(this.state.transaction.transactionDate)}
 									onChange={this.handleDateChange}
 								/>
 							</div>
@@ -108,4 +125,4 @@ class AddTransactionForm extends Component {
 	}
 }
 
-export default AddTransactionForm;
+export default TransactionForm;

@@ -15,6 +15,13 @@ class BudgetApi {
 			});
 	}
 
+	static editTransaction(budgetId, transaction) {
+		return AxiosHttp.put(`http://localhost:32676/api/budgets/${budgetId}/transactions/${transaction.transactionId}`, transaction)
+			.then(function (response) {
+				return response.data;
+			});
+	}
+
 	static getTransactionTypes() {
 		return [
 			{

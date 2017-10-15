@@ -8,12 +8,13 @@ import SideNavigation from '../shared/sideNavigation.jsx';
 import ContentContainer from '../shared/contentContainer.jsx';
 import TransactionForm from '../shared/transactionForm.jsx';
 
-class AddTransactionPage extends Component {
+class EditTransactionPage extends Component {
 	constructor() {
 		super();
 		this.state = {
 			user: {},
-			budget: {}
+			budget: {},
+			transaction: {}
 		}
 		this.onSubmit = this.onSubmit.bind(this);
 	}
@@ -21,15 +22,17 @@ class AddTransactionPage extends Component {
 		UserApi.getCurrentUser().then((user) => {
 			this.setState({ user: user });
 		});
+		let props = this.props;
 		BudgetApi.getBudget().then((budget) => {
-			this.setState({ budget: budget });
+			let transaction = budget.transactions.find(t => t.transactionId == props.match.params.transactionId);
+			this.setState({ budget: budget, transaction: transaction });
 		});
 	}
 
 	onSubmit(event, transaction) {
 		event.preventDefault();
 		let component = this;
-		BudgetApi.addTransaction(this.state.budget.budgetId, transaction).then(function (data) {
+		BudgetApi.editTransaction(this.state.budget.budgetId, transaction).then(function (data) {
 			let transactionType = BudgetApi.getTransactionTypeById(transaction.transactionType);
 			component.setState({ submitted: true, submittedTransactionType: transactionType })
 		});
@@ -43,12 +46,12 @@ class AddTransactionPage extends Component {
 		return (
 			<div>
 				<SideNavigation className="col-md-2" />
-				<ContentContainer headerTitle="Add Transaction" user={this.state.user}>
-					<TransactionForm onSubmit={this.onSubmit} transactionType={this.props.match.params.transactionType} />
+				<ContentContainer headerTitle="Edit Transaction" user={this.state.user}>
+					<TransactionForm onSubmit={this.onSubmit} transaction={this.state.transaction} />
 				</ContentContainer>
 			</div>
 		);
 	}
 }
 
-export default AddTransactionPage;
+export default EditTransactionPage;

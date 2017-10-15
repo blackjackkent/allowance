@@ -29,7 +29,7 @@ class ManagementDataTable extends Component {
 			<StyledDataTable>
 				<table className="table table-responsive table-striped">
 					<thead>
-						<tr><th /><th>Transaction Name</th><th>Transaction Date</th><th>Transaction Amount</th></tr>
+						<tr><th /><th>Transaction Name</th><th>Transaction Date</th><th>Transaction Amount</th><th /></tr>
 					</thead>
 					<tbody>
 						{rows}
