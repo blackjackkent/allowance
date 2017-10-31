@@ -24,7 +24,7 @@ namespace BudgetingAPI.Models.DomainModels
 			    var currentMonth = currentDate.Month;
 			    var currentYear = currentDate.Year;
 			    var daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
-			    var remainingDaysInMonth = daysInMonth - currentDate.Day;
+			    var remainingDaysInMonth = daysInMonth - currentDate.Day + 1;
 			    var outflow = BillTotal + ExpenseTotal;
 			    var moneyToSpend = IncomeTotal - outflow - Savings;
 			    return moneyToSpend / remainingDaysInMonth;

@@ -101,7 +101,7 @@ namespace BudgetingAPI
 		        }
 	        });
 	        app.UseCors(builder =>
-		        builder.WithOrigins("http://localhost:8081").AllowAnyHeader().AllowAnyMethod());
+		        builder.WithOrigins("http://localhost:8080").AllowAnyHeader().AllowAnyMethod());
 			app.UseMvc();
 	        roleInitializer.Seed().Wait();
         }

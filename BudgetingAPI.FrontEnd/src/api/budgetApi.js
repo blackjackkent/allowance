@@ -8,6 +8,13 @@ class BudgetApi {
 			});
 	}
 
+	static editBudget(budgetId, budget) {
+		return AxiosHttp.put(`http://localhost:32676/api/budgets/${budgetId}`, budget)
+			.then(function (response) {
+				return response.data;
+			});
+	}
+
 	static addTransaction(budgetId, transaction) {
 		return AxiosHttp.post(`http://localhost:32676/api/budgets/${budgetId}/transactions`, transaction)
 			.then(function (response) {

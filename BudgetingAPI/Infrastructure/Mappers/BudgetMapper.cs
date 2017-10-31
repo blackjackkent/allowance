@@ -10,6 +10,7 @@
 	    public BudgetMapper()
 	    {
 		    CreateMap<Budget, Entities.Budget>()
+				.ForMember(d => d.Transactions, opt => opt.Ignore())
 			    .ReverseMap()
 			    .ForMember(d => d.ApiUrl, opt => opt.ResolveUsing<BudgetUrlResolver>());
 		}
