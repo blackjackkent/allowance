@@ -15,9 +15,7 @@ console.log('SRC_DIR', SRC_DIR);
 
 module.exports = (env = {}) => {
 	return {
-		entry: {
-			index: [SRC_DIR + '/index.jsx']
-		},
+		entry: ['babel-polyfill', SRC_DIR + '/index.js'],
 		output: {
 			path: BUILD_DIR,
 			publicPath: '/',
@@ -84,7 +82,7 @@ module.exports = (env = {}) => {
 					]
 				},
 				{
-					test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+					test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
 					loader: 'file-loader',
 					options: {
 						name: './fonts/[name].[hash].[ext]'
