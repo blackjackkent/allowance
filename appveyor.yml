@@ -1,0 +1,15 @@
+-
+  branches:
+    only:
+      - production
+  configuration: Release
+  platform: Any CPU
+  deploy:
+    - provider: Environment
+      name: AllowanceAPI-Production
+  build:
+    project: BudgetingAPI.sln
+    publish_wap: true
+    verbosity: quiet
+  before_build:
+    - ps: nuget restore BudgetingAPI.sln -Verbosity Quiet

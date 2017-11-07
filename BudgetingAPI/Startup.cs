@@ -44,8 +44,11 @@ namespace BudgetingAPI
         {
             // Add framework services.
 	        services.AddSingleton(_config);
-			var connection = _config["Data:ConnectionString"];
-			services.AddDbContext<BudgetContext>(options => options.UseSqlServer(connection));
+	        var connection = _config.GetConnectionString("AllowanceDb");
+			services.AddDbContext<BudgetContext>(options =>
+			{
+				options.UseSqlServer(connection);
+			});
 	        services.AddScoped<IRepository<Budget>, BudgetRepository>();
 	        services.AddScoped<IRepository<Transaction>, TransactionRepository>();
 			services.AddScoped<IBudgetService, BudgetService>();
