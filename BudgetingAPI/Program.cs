@@ -15,10 +15,12 @@ namespace BudgetingAPI
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+	            .UseSetting("detailedErrors", "true")
+				.UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
-                .Build();
+	            .CaptureStartupErrors(true)
+				.Build();
 
             host.Run();
         }
