@@ -104,7 +104,7 @@ namespace BudgetingAPI
 		        }
 	        });
 	        app.UseCors(builder =>
-		        builder.WithOrigins("http://localhost:8080").AllowAnyHeader().AllowAnyMethod());
+		        builder.WithOrigins("http://localhost:8080", "http://allowanceapp.azurewebsites.net/").AllowAnyHeader().AllowAnyMethod());
 			app.UseMvc();
 	        roleInitializer.Seed().Wait();
         }
